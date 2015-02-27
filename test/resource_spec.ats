@@ -1,0 +1,72 @@
+import {TestResource} from './test-resource';
+import {MockedResponses} from './mocked-responses';
+
+
+
+
+describe('Resource', function () {
+    var testResource;
+
+    beforeEach(function () {
+        testResource = new TestResource();
+    });
+
+    it ('should pass', function () {
+        expect(true).toBe(true);
+
+    });
+
+    it ('should be instanceof TestResource', function() {
+        expect(testResource instanceof TestResource).toBe(true);
+    });
+
+    describe ('TestResource#queryTestResource()', function () {
+        beforeEach(function () {
+            jasmine.Ajax.install();
+        });
+
+        afterEach(function () {
+            jasmine.Ajax.uninstall();
+        });
+
+        it ('should make a GET request to /test-resource/test when called', function (done) {
+
+            testResource.queryTestResource().then(function (res) {
+                expect(typeof res).toBe('object');
+                expect(res.status).toBe('ok');
+                done();
+            });
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestGetResponse());
+        });
+
+    });
+
+
+    describe ('TestResource#postTestResource()', function () {
+        beforeEach(function () {
+            jasmine.Ajax.install();
+        });
+
+        afterEach(function () {
+            jasmine.Ajax.uninstall();
+        });
+
+        it ('should make a POST request to /test-resource/test when called', function (done) {
+
+            testResource.postTestResource().then(function (res) {
+                expect(typeof res).toBe('object');
+                expect(res.status).toBe('ok');
+                done();
+            });
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestPostResponse());
+
+        });
+    });
+
+
+
+});

@@ -1,0 +1,17 @@
+export class MockedResponses {
+
+    static successfulTestGetResponse() {
+        return {
+            status: 200,
+            responseText: '{"status": "ok"}'
+        };
+    }
+
+    static successfulTestPostResponse() {
+        return {
+            status: 200,
+            responseText: '{"status": "ok"}'
+        };
+    }
+}
+

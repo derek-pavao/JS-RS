@@ -1,0 +1,7 @@
+export class TestModel {
+
+    constructor(attrs) {
+        this.firstName = attrs.firstName || null;
+        this.lastName = attrs.lastName || null;
+    }
+}

@@ -1,0 +1,37 @@
+import {Path} from '../src/annotations/path';
+import {GET} from '../src/annotations/GET';
+import {POST} from '../src/annotations/POST';
+import {PUT} from '../src/annotations/PUT';
+import {Resource} from '../src/resource';
+import {ReturnsArray} from '../src/annotations/returns-array';
+import {ReturnsObject} from '../src/annotations/returns-object';
+import {TestModel} from './test-model';
+
+@Path('/test-resource')
+export class TestResource extends Resource {
+
+
+
+    @GET
+    @ReturnsArray(TestModel)
+    @Path('/test')
+    queryTestResource() {}
+
+    @GET
+    @ReturnsObject(TestModel)
+    @Path('/test/{id}')
+    getTestResource() {}
+
+    @POST
+    @ReturnsObject(TestModel)
+    @Path('/test')
+    postTestResource() {}
+
+    @PUT
+    @ReturnsObject(TestModel)
+    @Path('/test/{id}')
+    putTestResource() {}
+
+
+
+}
