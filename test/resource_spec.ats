@@ -39,6 +39,21 @@ describe('Resource', function () {
 
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestGetResponse());
+
+            expect(request.url).toBe('/test-resource/test');
+        });
+
+        it ('should be able to parse QueryParam annotations in the function arguments', function (done) {
+            testResource.queryTestResource('asc').then(function (res) {
+                expect(typeof res).toBe('object');
+                expect(res.status).toBe('ok');
+                done();
+            });
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestGetResponse());
+
+            expect(request.url).toBe('/test-resource/test?sort=asc');
         });
 
     });
@@ -65,6 +80,29 @@ describe('Resource', function () {
             request.respondWith(MockedResponses.successfulTestPostResponse());
 
         });
+    });
+
+    describe ('TestResource#getTestResource()', function () {
+        beforeEach(function () {
+            jasmine.Ajax.install();
+        });
+
+        afterEach(function () {
+            jasmine.Ajax.uninstall();
+        });
+
+        it ('should be able to parse @PathParam in arguments', function (done) {
+            testResource.getTestResource(1).then(function (res) {
+                expect(typeof res).toBe('object');
+                done();
+            });
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.succesfulTestGetOneResponse());
+            expect(request.url).toBe('/test-resource/test/1');
+
+        });
+
     });
 
 

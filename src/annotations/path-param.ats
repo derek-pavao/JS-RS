@@ -1,0 +1,7 @@
+export class PathParam {
+
+    constructor(paramName:string) {
+        this.paramName = paramName;
+        this.argumentPosition = null;
+    }
+}

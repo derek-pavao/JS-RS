@@ -13,5 +13,12 @@ export class MockedResponses {
             responseText: '{"status": "ok"}'
         };
     }
+
+    static succesfulTestGetOneResponse() {
+        return {
+            status: 200,
+            responseText: '{"status": "ok"}'
+        };
+    }
 }
 

@@ -2,6 +2,8 @@ import {Path} from '../src/annotations/path';
 import {GET} from '../src/annotations/GET';
 import {POST} from '../src/annotations/POST';
 import {PUT} from '../src/annotations/PUT';
+import {PathParam} from '../src/annotations/path-param';
+import {QueryParam} from '../src/annotations/query-param';
 import {Resource} from '../src/resource';
 import {ReturnsArray} from '../src/annotations/returns-array';
 import {ReturnsObject} from '../src/annotations/returns-object';
@@ -10,17 +12,15 @@ import {TestModel} from './test-model';
 @Path('/test-resource')
 export class TestResource extends Resource {
 
-
-
     @GET
     @ReturnsArray(TestModel)
     @Path('/test')
-    queryTestResource() {}
+    queryTestResource(@QueryParam('sort') sortDirection) {}
 
     @GET
     @ReturnsObject(TestModel)
     @Path('/test/{id}')
-    getTestResource() {}
+    getTestResource(@PathParam('id') id:number) {}
 
     @POST
     @ReturnsObject(TestModel)

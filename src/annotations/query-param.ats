@@ -1,0 +1,7 @@
+export class QueryParam {
+
+    constructor(paramName) {
+        this.paramName = paramName;
+        this.argumentPosition = null;
+    }
+}

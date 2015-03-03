@@ -7,19 +7,31 @@ the new Angular2.0 being developed and the JAX-RS spec from the land of Java.
 a complete example can be found in JS-RS/test/test-resource.ats
 
 ```javascript
+
 @Path('/test-resource')
 export class TestResource extends Resource {
-
 
     @GET
     @ReturnsArray(TestModel)
     @Path('/test')
-    queryTestResource() {}
+    queryTestResource(@QueryParam('sort') sortDirection) {}
 
     @GET
     @ReturnsObject(TestModel)
     @Path('/test/{id}')
-    getTestResource() {}
+    getTestResource(@PathParam('id') id:number) {}
+
+    @POST
+    @ReturnsObject(TestModel)
+    @Path('/test')
+    postTestResource() {}
+
+    @PUT
+    @ReturnsObject(TestModel)
+    @Path('/test/{id}')
+    putTestResource() {}
+
+
 
 }
 ```

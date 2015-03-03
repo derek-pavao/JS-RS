@@ -3,9 +3,14 @@ import {GET} from './annotations/GET';
 import {POST} from './annotations/POST';
 import {PUT} from './annotations/PUT';
 import {DELETE} from './annotations/DELETE';
+import {PathParam} from './annotations/path-param';
+import {QueryParam} from './annotations/query-param';
+import {RequestBody} from './annotations/request-body';
 import {ReturnsArray} from './annotations/returns-array';
 import {ReturnsObject} from './annotations/returns-object';
 import {HTTPRequest} from './libs/http-request';
+
+import {TestResource} from '../test/test-resource';
 
 export class Resource {
 
@@ -29,10 +34,12 @@ export class Resource {
 
     parseMethodMetaData() {
         for (var methodName in this) {
+
             if (!this.hasOwnProperty(methodName) && this[methodName].annotations) {
                 let isResourceMethod = false;
 
                 this[methodName].annotations.forEach((annotation) => {
+
                     if (annotation instanceof Path) {
                         this.parsePathAnnotation(methodName, annotation);
                         isResourceMethod = true;
@@ -58,6 +65,30 @@ export class Resource {
 
 
     }
+
+    parseParameterMetaData(func) {
+        var ret = {pathParams: [], queryParams: [], body: null};
+        if (typeof func.parameters !== 'undefined') {
+
+            func.parameters.forEach(function (parameter, parameterIndex) {
+
+                parameter.forEach(function (parameterAnnotation) {
+                    parameterAnnotation.argumentPosition = parameterIndex;
+
+                    if (parameterAnnotation instanceof PathParam) {
+                        ret.pathParams.push(parameterAnnotation);
+                    } else if (parameterAnnotation instanceof QueryParam) {
+                        ret.queryParams.push(parameterAnnotation);
+                    } else if (parameterAnnotation instanceof RequestBody) {
+                        ret.requestBody = parameterAnnotation;
+                    }
+                }.bind(this));
+            }.bind(this));
+        }
+
+        return ret;
+    }
+
 
     parsePathAnnotation(methodName: string, annotation: Object) {
         this[methodName].path = this.basePath + annotation.path;
@@ -87,14 +118,43 @@ export class Resource {
         this[methodName].returnsArray = false;
     }
 
+    pathBuilder(pathPattern:string, pathParams:Array, queryParams:Array, args):string {
+        var path = pathPattern,
+            queryString = '?';
+        pathParams.forEach(function (pathParam) {
+            path = path.replace('{' + pathParam.paramName + '}', args[pathParam.argumentPosition]);
+        });
+
+        queryParams.forEach(function (queryParam) {
+            var paramValue = args[queryParam.argumentPosition];
+            if (paramValue !== null && typeof paramValue !== 'undefined') {
+                queryString += queryParam.paramName + '=' + args[queryParam.argumentPosition] + '&';
+            }
+        });
+        if (queryString === '?') {
+            return path;
+        } else {
+            if (queryString[queryString.length - 1] === '&') {
+                queryString = queryString.substr(0, queryString.length - 1);
+            }
+            return path + queryString;
+        }
+
+    }
+
 
     redefineMethod(methodName: string) {
         var restMethod = this[methodName].restMethod.toLowerCase();
-        var path = this[methodName].path;
+        var pathPattern = this[methodName].path;
+        var parameterMetaData = this.parseParameterMetaData(this[methodName]);
 
-        this[methodName] = function (data:Object = null) {
+
+        this[methodName] = function () {
+
+            var path = this.pathBuilder(pathPattern, parameterMetaData.pathParams, parameterMetaData.queryParams, arguments);
+            console.log('path', path);
             var httpRequest = HTTPRequest[restMethod](path);
-            return httpRequest.send(data);
+            return httpRequest.send(parameterMetaData.requestBody);
         }
     }
 
