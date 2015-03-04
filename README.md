@@ -1,4 +1,4 @@
-#JS-RS
+#JS-RS (A Work In Progress)
 
 This is an experimental Rest Service for JavaScript leveraging AtScript and TypeScript. This code is highly influenced by
 the new Angular2.0 being developed and the JAX-RS spec from the land of Java.
