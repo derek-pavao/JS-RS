@@ -24,13 +24,12 @@ export class TestResource extends Resource {
     @POST
     @ReturnsObject(TestModel)
     @Path('/test')
-    postTestResource() {}
+    postTestResource(@RequestBody testModel) {}
 
     @PUT
     @ReturnsObject(TestModel)
     @Path('/test/{id}')
     putTestResource() {}
-
 
 
 }
