@@ -44,6 +44,7 @@ describe('Resource', function () {
         });
 
         it ('should be able to parse QueryParam annotations in the function arguments', function (done) {
+
             testResource.queryTestResource('asc').then(function (res) {
                 expect(typeof res).toBe('object');
                 expect(res.status).toBe('ok');
@@ -78,7 +79,21 @@ describe('Resource', function () {
 
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestPostResponse());
+        });
 
+        it ('should be able to parse a RequestBody anotation in its paramters', function (done) {
+            var testModel = {firstName: 'Derek', lastName: 'Pavao'};
+            testResource.postTestResource(testModel).then(function () {
+                debugger;
+                done();
+                debugger;
+            });
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestPostResponse());
+
+            // need to find out how to assert body of the request
+            debugger;
         });
     });
 

@@ -4,6 +4,7 @@ import {POST} from '../src/annotations/POST';
 import {PUT} from '../src/annotations/PUT';
 import {PathParam} from '../src/annotations/path-param';
 import {QueryParam} from '../src/annotations/query-param';
+import {RequestBody} from '../src/annotations/request-body';
 import {Resource} from '../src/resource';
 import {ReturnsArray} from '../src/annotations/returns-array';
 import {ReturnsObject} from '../src/annotations/returns-object';
@@ -25,7 +26,7 @@ export class TestResource extends Resource {
     @POST
     @ReturnsObject(TestModel)
     @Path('/test')
-    postTestResource() {}
+    postTestResource(@RequestBody testModel) {}
 
     @PUT
     @ReturnsObject(TestModel)
