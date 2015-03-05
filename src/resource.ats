@@ -10,8 +10,6 @@ import {ReturnsArray} from './annotations/returns-array';
 import {ReturnsObject} from './annotations/returns-object';
 import {HTTPRequest} from './libs/http-request';
 
-import {TestResource} from '../test/test-resource';
-
 export class Resource {
 
     constructor() {

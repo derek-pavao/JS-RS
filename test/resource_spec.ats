@@ -1,14 +1,14 @@
-import {TestResource} from './test-resource';
+import {ExampleResource} from './example-resource';
 import {MockedResponses} from './mocked-responses';
 
 
 
 
 describe('Resource', function () {
-    var testResource;
+    var exampleResource;
 
     beforeEach(function () {
-        testResource = new TestResource();
+        exampleResource = new ExampleResource();
     });
 
     it ('should pass', function () {
@@ -16,11 +16,11 @@ describe('Resource', function () {
 
     });
 
-    it ('should be instanceof TestResource', function() {
-        expect(testResource instanceof TestResource).toBe(true);
+    it ('should be instanceof ExampleResource', function() {
+        expect(exampleResource instanceof ExampleResource).toBe(true);
     });
 
-    describe ('TestResource#queryTestResource()', function () {
+    describe ('ExampleResource#queryExampleResource()', function () {
         beforeEach(function () {
             jasmine.Ajax.install();
         });
@@ -31,7 +31,7 @@ describe('Resource', function () {
 
         it ('should make a GET request to /test-resource/test when called', function (done) {
 
-            testResource.queryTestResource().then(function (res) {
+            exampleResource.queryExampleResource().then(function (res) {
                 expect(typeof res).toBe('object');
                 expect(res.status).toBe('ok');
                 done();
@@ -45,7 +45,7 @@ describe('Resource', function () {
 
         it ('should be able to parse QueryParam annotations in the function arguments', function (done) {
 
-            testResource.queryTestResource('asc').then(function (res) {
+            exampleResource.queryExampleResource('asc').then(function (res) {
                 expect(typeof res).toBe('object');
                 expect(res.status).toBe('ok');
                 done();
@@ -60,7 +60,7 @@ describe('Resource', function () {
     });
 
 
-    describe ('TestResource#postTestResource()', function () {
+    describe ('ExampleResource#postExampleResource()', function () {
         beforeEach(function () {
             jasmine.Ajax.install();
         });
@@ -71,7 +71,7 @@ describe('Resource', function () {
 
         it ('should make a POST request to /test-resource/test when called', function (done) {
 
-            testResource.postTestResource().then(function (res) {
+            exampleResource.postExampleResource().then(function (res) {
                 expect(typeof res).toBe('object');
                 expect(res.status).toBe('ok');
                 done();
@@ -83,7 +83,7 @@ describe('Resource', function () {
 
         it ('should be able to parse a RequestBody anotation in its paramters', function (done) {
             var testModel = {firstName: 'Derek', lastName: 'Pavao'};
-            testResource.postTestResource(testModel).then(function () {
+            exampleResource.postExampleResource(testModel).then(function () {
                 debugger;
                 done();
                 debugger;
@@ -97,7 +97,7 @@ describe('Resource', function () {
         });
     });
 
-    describe ('TestResource#getTestResource()', function () {
+    describe ('ExampleResource#getExampleResource()', function () {
         beforeEach(function () {
             jasmine.Ajax.install();
         });
@@ -107,7 +107,7 @@ describe('Resource', function () {
         });
 
         it ('should be able to parse @PathParam in arguments', function (done) {
-            testResource.getTestResource(1).then(function (res) {
+            exampleResource.getExampleResource(1).then(function (res) {
                 expect(typeof res).toBe('object');
                 done();
             });

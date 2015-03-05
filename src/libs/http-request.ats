@@ -6,6 +6,7 @@ export class HTTPRequest {
     }
 
     send(data = null): Promise {
+
         return new Promise((resolve, reject) => {
 
             var xhr = new XMLHttpRequest();
@@ -19,7 +20,7 @@ export class HTTPRequest {
             };
 
             xhr.open(this.options.method, this.options.path, true);
-            xhr.send();
+            xhr.send(data);
         });
 
     }

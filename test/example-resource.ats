@@ -1,0 +1,37 @@
+import {Path} from '../src/annotations/path';
+import {GET} from '../src/js-rs';
+import {POST} from '../src/js-rs';
+import {PUT} from '../src/js-rs';
+import {PathParam} from '../src/js-rs';
+import {QueryParam} from '../src/js-rs';
+import {RequestBody} from '../src/js-rs';
+import {Resource} from '../src/js-rs';
+import {ReturnsArray} from '../src/js-rs';
+import {ReturnsObject} from '../src/js-rs';
+import {TestModel} from './test-model';
+
+@Path('/test-resource')
+export class ExampleResource extends Resource {
+
+    @GET
+    @ReturnsArray(TestModel)
+    @Path('/test')
+    queryExampleResource(@QueryParam('sort') sortDirection) {}
+
+    @GET
+    @ReturnsObject(TestModel)
+    @Path('/test/{id}')
+    getExampleResource(@PathParam('id') id:number) {}
+
+    @POST
+    @ReturnsObject(TestModel)
+    @Path('/test')
+    postExampleResource(@RequestBody testModel) {}
+
+    @PUT
+    @ReturnsObject(TestModel)
+    @Path('/test/{id}')
+    putExampleResource() {}
+
+
+}
