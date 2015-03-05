@@ -3,36 +3,68 @@
 This is an experimental Rest Service for JavaScript leveraging AtScript and TypeScript. This code is highly influenced by
 the new Angular2.0 being developed and the JAX-RS spec from the land of Java.
 
-### Example of a resource class
-a complete example can be found in JS-RS/test/example-resource.ats
+###An Example:
+
+You have a REST Service that performs CRUD on a Person model say. There are endpoints like GET /person that gets a list of people, GET/person/{person_id} that gets one Person, POST /person that takes a Person model in the body of the request and creates a new Person model, and PUT /person/{person_id}
+
+You might use something like JS-RS to write a client to interact with your rest service. That client might look like the following
 
 ```javascript
-
-@Path('/example-resource')
-export class ExampleResource extends Resource {
+@Path('/person')
+class PersonResource extends Resource {
+    
+    @GET
+    getPersonList() {}
 
     @GET
-    @ReturnsArray(TestModel)
-    @Path('/example')
-    queryExampleResource(@QueryParam('sort') sortDirection) {}
+    @Path('/{person_id}')
+    getOnePerson(@PathParam('person_id') personId) {}
 
-    @GET
-    @ReturnsObject(TestModel)
-    @Path('/example/{id}')
-    getExampleResource(@PathParam('id') id:number) {}
-
-    @POST
-    @ReturnsObject(TestModel)
-    @Path('/example')
-    postExampleResource(@RequestBody testModel) {}
 
     @PUT
-    @ReturnsObject(TestModel)
-    @Path('/example/{id}')
-    putExampleResource() {}
+    @Path('/{person_id}')
+    updatePerson(@PathParam('person_id') personId, @RequestBody personModel) {}
+
+    @POST
+    createPerson(@RequestBody personModel) {}
 
 }
 ```
+
+Two things to note here:
+ - The lack of method bodies, they are actually not necessary
+ - Each of these methods will return a Promise
+
+Now that you have a PersonResource class you can use it to make requests to the server to get people, something like
+
+
+```javascript
+
+var personResource = new PersonResource();
+
+/**
+ * Retrieving a list of people
+ */
+personResource.getPersonList().then(function (personList) {
+    // do something with personList
+});
+
+
+/**
+ * and creating a new person
+ */
+var personModel = {
+    firstName: "Joe",
+    lastName: "Jackson"
+};
+
+personResource.createPerson(personModel).then(function () {
+    // the person is done being created
+});
+```
+
+So using JS-RS you could create an object to interact with your backend service, without actually writing any code. Most of these ideas come from the JAX-RS spec, a spec in Java for creating and interacting with REST services.
+
 
 ### Initial setup
 ```bash
