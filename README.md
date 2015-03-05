@@ -9,27 +9,28 @@ a complete example can be found in JS-RS/test/test-resource.ats
 ```javascript
 
 @Path('/test-resource')
-export class TestResource extends Resource {
+export class ExampleResource extends Resource {
 
     @GET
     @ReturnsArray(TestModel)
     @Path('/test')
-    queryTestResource(@QueryParam('sort') sortDirection) {}
+    queryExampleResource(@QueryParam('sort') sortDirection) {}
 
     @GET
     @ReturnsObject(TestModel)
     @Path('/test/{id}')
-    getTestResource(@PathParam('id') id:number) {}
+    getExampleResource(@PathParam('id') id:number) {}
 
     @POST
     @ReturnsObject(TestModel)
     @Path('/test')
-    postTestResource(@RequestBody testModel) {}
+    postExampleResource(@RequestBody testModel) {}
 
     @PUT
     @ReturnsObject(TestModel)
     @Path('/test/{id}')
-    putTestResource() {}
+    putExampleResource() {}
+
 
 
 }
