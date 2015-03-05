@@ -4,7 +4,7 @@ This is an experimental Rest Service for JavaScript leveraging AtScript and Type
 the new Angular2.0 being developed and the JAX-RS spec from the land of Java.
 
 ### Example of a resource class
-a complete example can be found in JS-RS/test/test-resource.ats
+a complete example can be found in JS-RS/test/example-resource.ats
 
 ```javascript
 
