@@ -40,7 +40,7 @@ describe('Resource', function () {
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestGetResponse());
 
-            expect(request.url).toBe('/example-resource/example');
+            expect(request.url).toBe('/example-resource');
         });
 
         it ('should be able to parse QueryParam annotations in the function arguments', function (done) {
@@ -54,7 +54,7 @@ describe('Resource', function () {
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestGetResponse());
 
-            expect(request.url).toBe('/example-resource/example?sort=asc');
+            expect(request.url).toBe('/example-resource?sort=asc');
         });
 
     });
@@ -72,9 +72,10 @@ describe('Resource', function () {
         it ('should make a POST request to /example-resource/example when called', function (done) {
 
             exampleResource.postExampleResource().then(function (res) {
+                done();
                 expect(typeof res).toBe('object');
                 expect(res.status).toBe('ok');
-                done();
+
             });
 
             var request = jasmine.Ajax.requests.mostRecent();
@@ -84,16 +85,14 @@ describe('Resource', function () {
         it ('should be able to parse a RequestBody anotation in its paramters', function (done) {
             var testModel = {firstName: 'Derek', lastName: 'Pavao'};
             exampleResource.postExampleResource(testModel).then(function () {
-                debugger;
                 done();
-                debugger;
             });
 
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestPostResponse());
 
             // need to find out how to assert body of the request
-            debugger;
+
         });
     });
 
@@ -114,7 +113,7 @@ describe('Resource', function () {
 
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.succesfulTestGetOneResponse());
-            expect(request.url).toBe('/example-resource/example/1');
+            expect(request.url).toBe('/example-resource/1');
 
         });
 

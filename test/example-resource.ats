@@ -15,22 +15,20 @@ export class ExampleResource extends Resource {
 
     @GET
     @ReturnsArray(TestModel)
-    @Path('/example')
-    queryExampleResource(@QueryParam('sort') sortDirection) {}
+    queryExampleResource(@QueryParam('sort') sortDirection:string) {}
 
     @GET
     @ReturnsObject(TestModel)
-    @Path('/example/{id}')
+    @Path('/{id}')
     getExampleResource(@PathParam('id') id:number) {}
 
     @POST
     @ReturnsObject(TestModel)
-    @Path('/example')
     postExampleResource(@RequestBody testModel) {}
 
     @PUT
     @ReturnsObject(TestModel)
-    @Path('/example/{id}')
+    @Path('/{id}')
     putExampleResource() {}
 
 
