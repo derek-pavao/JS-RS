@@ -136,6 +136,16 @@ describe('Resource', function () {
             expect(request.requestHeaders['Content-Type']).toBe('Some-Awesome-Content-Type');
 
         });
+
+        it ('should merge headers from method annotation with method parameter annotation', function (done) {
+            exampleResource.getHeadersTest({'Cache-Control': 'no-cache'}).then(done);
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestGetResponse());
+            debugger;
+            expect(request.requestHeaders['Content-Type']).toBe('application/xml');
+            expect(request.requestHeaders['Cache-Control']).toBe('no-cache');
+        });
     });
 
 
