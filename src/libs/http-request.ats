@@ -2,6 +2,7 @@ export class HTTPRequest {
 
     constructor(options) {
         this.options = options;
+        this.headers = {};
 
     }
 
@@ -20,9 +21,20 @@ export class HTTPRequest {
             };
 
             xhr.open(this.options.method, this.options.path, true);
+
+            for (var key in this.headers) {
+                if (this.headers.hasOwnProperty(key)) {
+                    xhr.setRequestHeader(key, this.headers[key]);
+                }
+            }
+
             xhr.send(data);
         });
 
+    }
+
+    setRequestHeaders(headers: Object) {
+        this.headers = headers;
     }
 
     static get(path: string, options: Object = {}): HTTPRequest {

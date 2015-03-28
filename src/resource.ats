@@ -9,6 +9,8 @@ import {RequestBody} from './annotations/request-body';
 import {ReturnsArray} from './annotations/returns-array';
 import {ReturnsObject} from './annotations/returns-object';
 import {HTTPRequest} from './libs/http-request';
+import {Headers} from './annotations/headers';
+import {HeadersParam} from './annotations/headers-param';
 
 export class Resource {
 
@@ -24,6 +26,8 @@ export class Resource {
             this.constructor.annotations.forEach((annotation) => {
                 if (annotation instanceof Path) {
                     this.basePath = annotation.path;
+                } else if (annotation instanceof Headers) {
+                    this.headers = annotation.headerObj;
                 }
             });
         }
@@ -57,6 +61,8 @@ export class Resource {
                         this.parseReturnsArrayAnnotation(methodName, annotation);
                     } else if (annotation instanceof ReturnsObject) {
                         this.parseReturnsObjectAnnotation(methodName, annotation);
+                    } else if (annotation instanceof Headers) {
+                        this.parseHeadersAnnotation(methodName, annotation);
                     }
                 });
                 if (isResourceMethod) {
@@ -69,7 +75,7 @@ export class Resource {
     }
 
     parseParameterMetaData(func) {
-        var ret = {pathParams: [], queryParams: [], body: null};
+        var ret = {pathParams: [], queryParams: [], body: null, headers: null};
         if (typeof func.parameters !== 'undefined') {
 
             func.parameters.forEach(function (parameter, parameterIndex) {
@@ -83,6 +89,8 @@ export class Resource {
                         ret.queryParams.push(parameterAnnotation);
                     } else if (parameterAnnotation instanceof RequestBody) {
                         ret.requestBody = parameterAnnotation;
+                    } else if (parameterAnnotation instanceof HeadersParam) {
+                        ret.headers = parameterAnnotation;
                     }
                 }.bind(this));
             }.bind(this));
@@ -120,6 +128,10 @@ export class Resource {
         this[methodName].returnsArray = false;
     }
 
+    parseHeadersAnnotation(methodName, annotation) {
+        this[methodName].headers = annotation.headerObj;
+    }
+
     pathBuilder(pathPattern:string, pathParams:Array, queryParams:Array, args):string {
         var path = pathPattern,
             queryString = '?';
@@ -149,6 +161,10 @@ export class Resource {
         var pathPattern;
         var restMethod = this[methodName].restMethod.toLowerCase();
         var parameterMetaData = this.parseParameterMetaData(this[methodName]);
+        var methodHeaders = {};
+        if (typeof this[methodName].headers !== 'undefined') {
+            methodHeaders = this[methodName].headers;
+        }
 
         if (typeof this[methodName].path === 'undefined') {
             pathPattern = this.basePath;
@@ -161,8 +177,17 @@ export class Resource {
         this[methodName] = function () {
 
             var path = this.pathBuilder(pathPattern, parameterMetaData.pathParams, parameterMetaData.queryParams, arguments);
+
             console.log('path', path);
             var httpRequest = HTTPRequest[restMethod](path);
+
+            var headers = Object.assign({}, (this.headers || {}), methodHeaders);
+            if (parameterMetaData.headers !== null) {
+                headers = Object.assign(headers, arguments[parameterMetaData.headers.argumentPosition]);
+            }
+
+            httpRequest.setRequestHeaders(headers);
+
             return httpRequest.send(parameterMetaData.requestBody);
         }
     }

@@ -8,13 +8,18 @@ import {RequestBody} from '../src/js-rs';
 import {Resource} from '../src/js-rs';
 import {ReturnsArray} from '../src/js-rs';
 import {ReturnsObject} from '../src/js-rs';
+import {Headers} from '../src/js-rs';
+import {HeadersParam} from '../src/js-rs';
 import {TestModel} from './test-model';
 
+
+@Headers({'Content-Type': 'application/json'})
 @Path('/example-resource')
 export class ExampleResource extends Resource {
 
     @GET
     @ReturnsArray(TestModel)
+    @Headers({'Content-Type': 'derp/durp'})
     queryExampleResource(@QueryParam('sort') sortDirection:string) {}
 
     @GET
@@ -30,6 +35,11 @@ export class ExampleResource extends Resource {
     @ReturnsObject(TestModel)
     @Path('/{id}')
     putExampleResource() {}
+
+
+    @GET
+    @Headers({'Content-Type': 'application/xml'})
+    getHeadersTest(@HeadersParam headersObj) {}
 
 
 }

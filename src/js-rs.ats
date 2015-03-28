@@ -8,3 +8,5 @@ export {RequestBody} from './annotations/request-body';
 export {Resource} from './resource';
 export {ReturnsArray} from './annotations/returns-array';
 export {ReturnsObject} from './annotations/returns-object';
+export {Headers} from './annotations/headers';
+export {HeadersParam} from './annotations/headers-param';

@@ -1,0 +1,6 @@
+export class Headers {
+
+    constructor(headerObj) {
+        this.headerObj = headerObj;
+    }
+}

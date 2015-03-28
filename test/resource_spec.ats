@@ -119,6 +119,25 @@ describe('Resource', function () {
 
     });
 
+    describe ('ExampleResource#getHeadersTest()', function () {
+        beforeEach(function () {
+            jasmine.Ajax.install();
+        });
+
+        afterEach(function () {
+            jasmine.Ajax.uninstall();
+        });
+
+        it ('should be able to parse @HeadersParam in arguments', function (done) {
+            exampleResource.getHeadersTest({'Content-Type': 'Some-Awesome-Content-Type'}).then(done);
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestGetResponse());
+            expect(request.requestHeaders['Content-Type']).toBe('Some-Awesome-Content-Type');
+
+        });
+    });
+
 
 
 });

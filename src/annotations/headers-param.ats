@@ -1,0 +1,6 @@
+export class HeadersParam {
+
+    constructor() {
+        this.argumentPosition = null;
+    }
+}
