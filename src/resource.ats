@@ -122,10 +122,12 @@ export class Resource {
 
     parseReturnsArrayAnnotation(methodName, annotation) {
         this[methodName].returnsArray = true;
+        this[methodName].ReturnType = annotation.ReturnType;
     }
 
     parseReturnsObjectAnnotation(methodName, annotation) {
         this[methodName].returnsArray = false;
+        this[methodName].ReturnType = annotation.ReturnType;
     }
 
     parseHeadersAnnotation(methodName, annotation) {
@@ -161,6 +163,8 @@ export class Resource {
         var pathPattern;
         var restMethod = this[methodName].restMethod.toLowerCase();
         var parameterMetaData = this.parseParameterMetaData(this[methodName]);
+        var returnsArray = this[methodName].returnsArray;
+        var ReturnType = this[methodName].ReturnType;
         var methodHeaders = {};
         if (typeof this[methodName].headers !== 'undefined') {
             methodHeaders = this[methodName].headers;
@@ -177,9 +181,8 @@ export class Resource {
         this[methodName] = function () {
 
             var path = this.pathBuilder(pathPattern, parameterMetaData.pathParams, parameterMetaData.queryParams, arguments);
-
-            console.log('path', path);
             var httpRequest = HTTPRequest[restMethod](path);
+
 
             var headers = Object.assign({}, (this.headers || {}), methodHeaders);
             if (parameterMetaData.headers !== null) {
@@ -188,7 +191,28 @@ export class Resource {
 
             httpRequest.setRequestHeaders(headers);
 
-            return httpRequest.send(parameterMetaData.requestBody);
+            return httpRequest.send(parameterMetaData.requestBody).then(function(res) {
+                console.log('res', res);
+
+                if (returnsArray) {
+                    if (typeof ReturnType !== 'undefined') {
+                        let ret = [];
+                        res.forEach(function (obj) {
+                            ret.push(new ReturnType(obj));
+                        });
+                        return ret;
+                    } else {
+                        return res;
+                    }
+                } else {
+                    if (typeof ReturyType !== 'undefined') {
+                        return new ReturnType(res);
+                    } else {
+                        return res;
+                    }
+                }
+
+            });
         }
     }
 

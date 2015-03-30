@@ -1,6 +1,6 @@
 export class ReturnsArray {
 
-    constructor(ObjConstructor) {
-        this.ObjConstructor = ObjConstructor;
+    constructor(ReturnType) {
+        this.ReturnType = ReturnType
     }
 }

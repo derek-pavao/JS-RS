@@ -1,5 +1,6 @@
 import {ExampleResource} from './example-resource';
 import {MockedResponses} from './mocked-responses';
+import {TestModel} from './test-model';
 
 
 
@@ -33,12 +34,11 @@ describe('Resource', function () {
 
             exampleResource.queryExampleResource().then(function (res) {
                 expect(typeof res).toBe('object');
-                expect(res.status).toBe('ok');
                 done();
             });
 
             var request = jasmine.Ajax.requests.mostRecent();
-            request.respondWith(MockedResponses.successfulTestGetResponse());
+            request.respondWith(MockedResponses.successfulTestModelGetResponse());
 
             expect(request.url).toBe('/example-resource');
         });
@@ -47,14 +47,26 @@ describe('Resource', function () {
 
             exampleResource.queryExampleResource('asc').then(function (res) {
                 expect(typeof res).toBe('object');
-                expect(res.status).toBe('ok');
                 done();
             });
 
             var request = jasmine.Ajax.requests.mostRecent();
-            request.respondWith(MockedResponses.successfulTestGetResponse());
+            request.respondWith(MockedResponses.successfulTestModelGetResponse());
 
             expect(request.url).toBe('/example-resource?sort=asc');
+        });
+
+        it ('should create an array of instances of the object passed to the ReturnsArray annotation', function (done) {
+            exampleResource.queryExampleResource('asc').then(function (res) {
+
+                res.forEach(function (obj) {
+                    expect(obj instanceof TestModel).toBe(true);
+                });
+                done();
+            });
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestModelGetResponse());
         });
 
     });
@@ -142,7 +154,7 @@ describe('Resource', function () {
 
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestGetResponse());
-            debugger;
+
             expect(request.requestHeaders['Content-Type']).toBe('application/xml');
             expect(request.requestHeaders['Cache-Control']).toBe('no-cache');
         });

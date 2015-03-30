@@ -1,7 +1,7 @@
 export class ReturnsObject {
 
 
-    constructor (ObjConstructor) {
-        this.ObjConstructor = ObjConstructor;
+    constructor (ReturnType) {
+        this.ReturnType = ReturnType;
     }
 }
