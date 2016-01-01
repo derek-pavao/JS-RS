@@ -22,6 +22,7 @@ export class ExampleResource extends Resource {
     @Headers({'Content-Type': 'derp/durp'})
     queryExampleResource(@QueryParam('sort') sortDirection:string) {}
 
+
     @GET
     @ReturnsObject(TestModel)
     @Path('/{id}')

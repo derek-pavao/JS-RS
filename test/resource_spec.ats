@@ -2,7 +2,7 @@ import {ExampleResource} from './example-resource';
 import {MockedResponses} from './mocked-responses';
 import {TestModel} from './test-model';
 
-
+class SubResource extends ExampleResource {}
 
 
 describe('Resource', function () {
@@ -67,6 +67,24 @@ describe('Resource', function () {
 
             var request = jasmine.Ajax.requests.mostRecent();
             request.respondWith(MockedResponses.successfulTestModelGetResponse());
+        });
+
+
+        it ('should support inheritance', function (done) {
+
+            var subResource = new SubResource();
+
+
+            subResource.queryExampleResource('asc').then(function () {
+                console.log('done bitches');
+                done();
+            });
+            console.log('subResource', subResource.queryExampleResource.toString());
+
+            var request = jasmine.Ajax.requests.mostRecent();
+            request.respondWith(MockedResponses.successfulTestGetResponse());
+
+            expect(request.requestHeaders['Content-Type']).toBe('derp/durp');
         });
 
     });
@@ -159,7 +177,6 @@ describe('Resource', function () {
             expect(request.requestHeaders['Cache-Control']).toBe('no-cache');
         });
     });
-
 
 
 });

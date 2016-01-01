@@ -192,7 +192,6 @@ export class Resource {
             httpRequest.setRequestHeaders(headers);
 
             return httpRequest.send(parameterMetaData.requestBody).then(function(res) {
-                console.log('res', res);
 
                 if (returnsArray) {
                     if (typeof ReturnType !== 'undefined') {
